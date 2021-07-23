@@ -1,25 +1,5 @@
 @extends('layouts.app');
-    {{-- <div class="row">
-        <div class="clm">
-            <table>
-                <thead>
-                    <th>Name</th>
-                    <th>Email</th>
-                </thead>
-
-                <tbody>
-                    @foreach ($user as $item)
-                        <tr>
-                            <td>{{ $loop->index+1 }}</td>
-                            <td>{{ $item->Product_Name }}</td>
-                            <td>{{ $item->Product_Description }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            {{ $user->links() }}
-        </div>
-    </div> --}}
+   
 @section('content')
     
     <center>{{ 'ALL ITEMS....' }} 
