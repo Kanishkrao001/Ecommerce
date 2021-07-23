@@ -25,19 +25,22 @@ Route::get('/product', function() {
 });
 
 Route::get('/Mobiles', function() {
-    $data = DB::table('products')->join('categories', 'products.category_id', '=', 'categories.category_id')->where(["category"=>"Mobiles"])->get();
+    $data = DB::table('products')->join('categories', 'products.category_id', '=', 'categories.category_id')
+    ->where(["category"=>"Mobiles"])->paginate(3);
 
     return view('mobile', compact('data'));
 });
 
 Route::get('/Laptops', function() {
-    $data = DB::table('products')->join('categories', 'products.category_id', '=', 'categories.category_id')->where(["category"=>"Laptops"])->get();
+    $data = DB::table('products')->join('categories', 'products.category_id', '=', 'categories.category_id')
+    ->where(["category"=>"Laptops"])->paginate(3);
 
     return view('laptop', compact('data'));
 });
 
 Route::get('/Watches', function() {
-    $data = DB::table('products')->join('categories', 'products.category_id', '=', 'categories.category_id')->where(["category"=>"Watches"])->get();
+    $data = DB::table('products')->join('categories', 'products.category_id', '=', 'categories.category_id')
+    ->where(["category"=>"Watches"])->paginate(3);
    
     return view('watch', compact('data'));
 });
