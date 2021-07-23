@@ -35,4 +35,6 @@
              <br><br>
             @endforeach
             
+            {{ $data->links() }}
+            
 @endsection 
