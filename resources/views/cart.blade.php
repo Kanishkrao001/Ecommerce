@@ -109,9 +109,14 @@
         <h4>Price3.</h4>
       </div>
     </div>
-    <div class="details">
+    {{-- <div class="details">
       <a href="/{{ Auth::user()->id }}/buy" class="anch"><button class="btn1">Buy Now</button></a>
-    </div>
+    </div> --}}
+    <form class="lower" action="/{{ Auth::user()->id }}/buy" method="post">
+      {{ csrf_field() }}
+      <input type="hidden" name="data" value="{{ $data }}">
+      <button type="submit" class="btn btn-danger lower">Buy Now</button>
+    </form>
   </div>
 
 @endsection

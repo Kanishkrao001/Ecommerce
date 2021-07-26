@@ -20,6 +20,8 @@ Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home', 'ProductController@index');
 
+Route::get('/home/bulk', 'ProductController@bulk');
+
 Route::get('/product', function() {
     return view('product');
 });
@@ -49,9 +51,9 @@ Route::post('{id}/cart', 'ProductController@AddToCart');
 
 Route::get('details/{id}', 'ProductController@details');
 
-Route::get('{id}/cart', 'ProductController@cart');
+Route::get('/{id}/cart', 'ProductController@cart');
 
-Route::get('{id}/buy', 'ProductController@buy');
+Route::post('{id}/buy', 'ProductController@buy');
 
 Route::post('/{id}/cart/remove', 'ProductController@remove');
 Route::get('/{id}/cart/remove', 'ProductController@view');
@@ -59,6 +61,7 @@ Route::get('/{id}/cart/remove', 'ProductController@view');
 Route::get('{id}/buy/payment', 'ProductController@payment');
 
 Route::get('/all', 'ProductController@viewall');
+Route::post('/{id}/checkout', 'ProductController@checkout');
 
 
 

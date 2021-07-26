@@ -8,10 +8,11 @@ use DB;
 use App\Cart;
 use App\Product;
 use App\User;
+use App\Order;
 
 class ProductController extends Controller
 {
-    //
+ 
     public function viewall()
     {
         $pro = Product::paginate(3);
@@ -20,6 +21,27 @@ class ProductController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function bulk()
+    {
+        for($i=0 ; $i< 1000 ; $i++)
+        {
+            for($j=1;$j<22;$j++)
+            {
+                $data = Product::find($j);
+                // print_r($data['category_id']);
+                $add = new Product;
+                $add->category_id=$data['category_id'];
+                $add->Product_Name=$data['Product_Name'];
+                $add->Product_Description = $data['Product_Description'];
+                $add->image=$data['image'];
+                $add->price=$data['price'];
+                $add->Pieces_available=$data['Pieces_available'];
+
+                $add->save();
+            }
+        }
     }
     public function AddToCart(Request $request)
     {
@@ -52,8 +74,6 @@ class ProductController extends Controller
     {
         if(!Auth::guest()){
             $data = Cart::join('products','products.product_id', '=', 'cart.product_id')->where('customer_id', $customer_id)->get();
-            // print_r(Auth::user()->name);
-            // die();
             return view('cart', compact('data'));
         }
         else{
@@ -63,7 +83,6 @@ class ProductController extends Controller
 
     public function remove(Request $req, $id)
     {
-        // return "removed from cart";
         if(!Auth::guest()){
 
             Cart::destroy($id);
@@ -76,17 +95,20 @@ class ProductController extends Controller
             return redirect('/login');
         }
     }
+
     public function view($id)
     {
         return view('cart');
     }
 
-    public function buy($id)
+    public function buy(Request $req, $id)
     {
+        $pro= $req->input("data");
+
         if(!Auth::guest()){
-            $data = User::join('userinfo','userinfo.id', '=', 'users.id')->where('users.id', $id)->get();
-            // print_r($data);
-            return view('checkout', compact('data'));
+            $dataa = User::join('userinfo','userinfo.id', '=', 'users.id')->where('users.id', $id)->get();
+            // print_r($dataa);
+            return view('checkout', compact('dataa','pro'));
         }
         else{
             redirect('/login');
@@ -101,5 +123,24 @@ class ProductController extends Controller
         else{
             redirect('/login');
         }
+    }
+
+    public function checkout(Request $req)
+    {
+        $data = Cart::join('products','products.product_id', '=', 'cart.product_id')->where('customer_id', Auth::user()->id)
+        ->sum('price');
+    
+        // return $data;
+        
+        $order= new Order;
+        $order->customer_id = Auth::user()->id;
+        $order->mode_of_payment = $req->payment;
+        $order->address = $req->address;
+        $order->paid = 0;
+        $order->total = $data;
+        
+        $order->save();
+
+        return redirect('/home');
     }
 }
