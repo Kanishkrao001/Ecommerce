@@ -9,6 +9,8 @@ use App\Cart;
 use App\Product;
 use App\User;
 use App\Order;
+use App\Order_History;
+
 
 class ProductController extends Controller
 {
@@ -43,6 +45,20 @@ class ProductController extends Controller
             }
         }
     }
+
+    public function search(Request $req)
+    {
+        // return $req->input();
+        // return $data = Product::select("SELECT * FROM 'products'
+        // WHERE 'Product_Name' LIKE '%op%'")->get();
+
+        $res = Product::where('Product_Name', 'like', '%'.$req->input('query').'%')->paginate(10);
+        // return $data;
+        $res->appends(['query' => $req->input('query')]);
+        return view('search', compact('res'));
+    }
+
+
     public function AddToCart(Request $request)
     {
             if(!Auth::guest()){
@@ -103,12 +119,14 @@ class ProductController extends Controller
 
     public function buy(Request $req, $id)
     {
-        $pro= $req->input("data");
+        // $pro= $req->input("data");
 
         if(!Auth::guest()){
-            $dataa = User::join('userinfo','userinfo.id', '=', 'users.id')->where('users.id', $id)->get();
-            // print_r($dataa);
-            return view('checkout', compact('dataa','pro'));
+
+            $data = User::join('userinfo','userinfo.id', '=', 'users.id')->where('users.id', $id)->get();
+            $pro = Cart::join('products','products.product_id', '=', 'cart.product_id')->where('customer_id', $id)->get();
+            // print_r($pro);
+            return view('checkout', compact('data','pro'));
         }
         else{
             redirect('/login');
@@ -127,10 +145,10 @@ class ProductController extends Controller
 
     public function checkout(Request $req)
     {
-        $data = Cart::join('products','products.product_id', '=', 'cart.product_id')->where('customer_id', Auth::user()->id)
-        ->sum('price');
+        $data = Cart::join('products','products.product_id', '=', 'cart.product_id')
+        ->where('customer_id', Auth::user()->id)->sum('price');
     
-        // return $data;
+        // // return $data[1]->Product_Name;
         
         $order= new Order;
         $order->customer_id = Auth::user()->id;
@@ -141,6 +159,21 @@ class ProductController extends Controller
         
         $order->save();
 
-        return redirect('/home');
+        $id = Cart::join('products','products.product_id', '=', 'cart.product_id')
+        ->where('customer_id', Auth::user()->id)->pluck('products.product_id');
+        // return $id;
+
+     
+           foreach($id as $i)
+           {
+            $save = new Order_History;
+            $save->cart_id = $order->id;
+            $save->user_id = Auth::user()->id;
+            $save->product_id = $i;
+            $save->save();
+           }
+       
+
+        return view('buy');
     }
 }

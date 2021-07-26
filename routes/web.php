@@ -47,6 +47,8 @@ Route::get('/Watches', function() {
     return view('watch', compact('data'));
 });
 
+Route::get('/search', 'ProductController@search');
+
 Route::post('{id}/cart', 'ProductController@AddToCart');
 
 Route::get('details/{id}', 'ProductController@details');

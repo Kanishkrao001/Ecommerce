@@ -2,16 +2,17 @@
 
 @section('content')
 
-{{ $pro }}
+{{-- {{ $pro[0]['Product_Name'] }} --}}
+
      <div class="order-summary">
         <h3>Order Summary.....</h3>
         @foreach ($pro as $item)
-        <div class="con">
-            <div class="before">
+        <div class="order">
+          <div class="before">
             <img class="imagg" src="{{ $item->image }}" alt="img">
           </div>  
            <div class="first">
-            <p>{{ $item[0]['Product_Name'] }}</p>
+            <p>{{ $item->Product_Name }}</p>
           </div>
           <div class="second">
             <p>{{ $item->price }}</p>
@@ -20,8 +21,10 @@
           @endforeach
     </div> 
 
+    <br><br>
+
     {{-- {{ $data[0]->Address_1 }} --}}
-    {{-- <form action="/{{ Auth::user()->id }}/checkout" method="POST">
+    <form action="/{{ Auth::user()->id }}/checkout" method="POST">
     <div class="whole">
       
       <div class="add">
@@ -59,11 +62,11 @@
           </div>
         </div>
         <div class="summit">
-          <button type="submit" >Buy Now</button>
+          <button type="submit" class="btn-info">Buy Now</button>
         </div>
         
      </div>
-    </form> --}}
+    </form>
     
 
 @endsection

@@ -212,6 +212,13 @@
             font-family: cursive;
             font-weight: bold;
         }
+        .order {
+            display: flex;
+            justify-content: space-around;
+            border: 0.1px solid red;
+            border-radius: 46px;
+            width: 50%
+        }
     </style>
 </head>
 <body>
@@ -241,9 +248,13 @@
                         <ul class="nav navbar-nav cust">
                             &nbsp; 
                              {{-- @if (!Auth::guest()) --}}
-                            <li><a href='/Mobiles'>Mobiles</a></li>
+                            {{-- <li><a href='/Mobiles'>Mobiles</a></li>
                             <li><a href="/Laptops">Laptops</a></li>
-                            <li><a href="/Watches">Watches</a></li>
+                            <li><a href="/Watches">Watches</a></li> --}}
+                            <form class="form-inline my-2 " action="/search" method="GET">
+                                <input class="form-control " type="text" placeholder="Search" name="query">
+                                <button class="btn btn-outline-success " type="submit">Search</button>
+                            </form>
                             {{-- @endif --}}
                         </ul>
                     </ul>
@@ -270,6 +281,13 @@
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a href="#">My Profile</a>
+
+                                        <form id="logout-form" action="#" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
