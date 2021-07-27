@@ -49,16 +49,24 @@ Route::get('/Watches', function() {
 
 Route::get('/search', 'ProductController@search');
 
-Route::post('{id}/cart', 'ProductController@AddToCart');
+Route::middleware('auth')->group(function() {
+    Route::post('{id}/cart', 'ProductController@AddToCart');
+    Route::get('/{id}/cart', 'ProductController@cart');
+    Route::post('{id}/buy', 'ProductController@buy');
+    Route::post('/{id}/cart/remove', 'ProductController@remove');
+    Route::get('/{id}/cart/remove', 'ProductController@view');
+});
+
+// Route::post('{id}/cart', 'ProductController@AddToCart')->middleware('LoginCheck');
 
 Route::get('details/{id}', 'ProductController@details');
 
-Route::get('/{id}/cart', 'ProductController@cart');
+// Route::get('/{id}/cart', 'ProductController@cart')->middleware('auth');
 
-Route::post('{id}/buy', 'ProductController@buy');
+// Route::post('{id}/buy', 'ProductController@buy')->middleware('LoginCheck');
 
-Route::post('/{id}/cart/remove', 'ProductController@remove');
-Route::get('/{id}/cart/remove', 'ProductController@view');
+// Route::post('/{id}/cart/remove', 'ProductController@remove')->middleware('LoginCheck');
+// Route::get('/{id}/cart/remove', 'ProductController@view')->middleware('LoginCheck');
 
 Route::get('{id}/buy/payment', 'ProductController@payment');
 
