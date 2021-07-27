@@ -9,7 +9,7 @@
     <br><br>
 
     <div class="summary">
-        <a href="#">Click Here to know Your Ordes Summar.....</a>
+        <a href="/{{ Auth::id() }}/cart_history">Click Here to know Your Ordes Summar.....</a>
     </div>
 
 @endsection

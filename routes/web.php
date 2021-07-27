@@ -64,6 +64,7 @@ Route::get('{id}/buy/payment', 'ProductController@payment');
 
 Route::get('/all', 'ProductController@viewall');
 Route::post('/{id}/checkout', 'ProductController@checkout');
+Route::get('/{id}/cart_history', 'ProductController@history');
 
 
 

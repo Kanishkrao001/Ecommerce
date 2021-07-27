@@ -219,6 +219,9 @@
             border-radius: 46px;
             width: 50%
         }
+       .search {
+           margin-top: 9px;
+       }
     </style>
 </head>
 <body>
@@ -242,22 +245,25 @@
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    <div class="navbar-header search">
+                        <form class="form-inline" action="/search" method="GET">
+                            <input class="form-control " type="text" placeholder="Search" name="query">
+                            <button class="btn btn-outline-success " type="submit">Search</button>
+                        </form>
+                    </div>
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
+                    {{-- <ul class="nav navbar-nav">
                         &nbsp;
                         <ul class="nav navbar-nav cust">
                             &nbsp; 
-                             {{-- @if (!Auth::guest()) --}}
-                            {{-- <li><a href='/Mobiles'>Mobiles</a></li>
+                             @if (!Auth::guest())
+                            <li><a href='/Mobiles'>Mobiles</a></li>
                             <li><a href="/Laptops">Laptops</a></li>
-                            <li><a href="/Watches">Watches</a></li> --}}
-                            <form class="form-inline my-2 " action="/search" method="GET">
-                                <input class="form-control " type="text" placeholder="Search" name="query">
-                                <button class="btn btn-outline-success " type="submit">Search</button>
-                            </form>
-                            {{-- @endif --}}
-                        </ul>
-                    </ul>
+                            <li><a href="/Watches">Watches</a></li>
+                           
+                            @endif
+                         </ul>
+                    </ul> --}}
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right cust">
@@ -288,6 +294,13 @@
                                         <a href="#">My Profile</a>
 
                                         <form id="logout-form" action="#" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a href="/{{ Auth::id() }}/cart_history">My Orders</a>
+
+                                        <form id="logout-form" action="/{{ Auth::id() }}/cart_history" method="GET" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>

@@ -172,8 +172,18 @@ class ProductController extends Controller
             $save->product_id = $i;
             $save->save();
            }
-       
+         
+           $customer_id = Auth::user()->id;
+
+           Cart::where('customer_id', Auth::user()->id)->delete();
 
         return view('buy');
+    }
+
+    public function history()
+    {
+       $order = Order::where('customer_id', Auth::id())->get();
+       return $order[0]; 
+    //    $details = Order_History::join('orders', 'order_histories.cart_id', '=', 'orders.id')->pluck('')
     }
 }

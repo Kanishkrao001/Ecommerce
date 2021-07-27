@@ -1,39 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+
 @foreach ($data as $item)
     @php ( $sum = 0 )
-
-       {{-- {{ errors }} --}}
-       {{-- when the cart is empty --}}
 @endforeach
 <br>
-
-{{-- <div class="name">
-    <center style="color: black; font-weight:bold; font-size:20px"><p>Here is Your Total.....</p>
-</div>
-<br>
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Item Name</th>
-        <th scope="col">Price</th>
-      </tr>
-    </thead>
-    <tbody>
-        @foreach ($data as $item)
-        <tr>
-            <td>{{ $item->Product_Name }}</td>
-            <td>{{ $item->price }}</td>
-            @php ($sum = $sum + $item->price)
-          </tr>
-        @endforeach
-        <tr>
-            <td>TOTAL</td>
-            <td> {{$sum}} </td>
-        </tr>
-    </tbody>
-  </table> --}}
 
   <div class="upper">
 
@@ -45,8 +17,8 @@
       <p>Empty Cart........</p>
       <p>Order Something...</p>
     @else
-      @foreach ($data as $item)
-      <div class="con">
+       @foreach ($data as $item)
+       <div class="con">
         <div class="before">
           <img class="imagg" src="{{ $item->image }}" alt="img">
         </div>
@@ -56,8 +28,9 @@
         <div class="second">
           <p>{{ $item->price }}</p>
         </div>
+  
         <div class="third">
-          <form class="lower" action="/{{ $item->id}}/cart/remove" method="post">
+          <form class="lower" action="/{{ $item->id }}/cart/remove" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="product_id" value="{{ $item->product_id }}">
             <input type="hidden" name="customer_id" value="{{ $item->customer_id }}">
@@ -66,47 +39,39 @@
         </div>
         @php ($sum = $sum + $item->price)
       </div>
+      <br>
       @endforeach
-           <br>
-          <div class="con">
-            <div class="first">
-              <p> Total Bill </p>
-            </div>
-            <div class="second">
-              <p>{{ $sum }}</p>
-            </div>
-      @endif
-  </div>
+
      {{-- <a  href="/{{ Auth::user()->id }}/buy" class="anch">Buy Now</a> --}}
   </div>
 
   <div class="checkout">
     <div class="details h">
        <h3>Order Summary..!!!</h3>
-      </div>
+    </div>
 
     <div class="details">
       <div class="det-first">
         <h4>Total Cost of products.</h4>
       </div>
       <div class="det-first">
-        <h4>Price1.</h4>
+        <h4>{{ $sum }}</h4>
       </div>
     </div>
     <div class="details">
       <div class="det-first">
-        <h4>Total .</h4>
+        <h4>Tax</h4>
       </div>
       <div class="det-first">
-        <h4>Price12.</h4>
+        <h4> 5% </h4>
       </div>
     </div>
     <div class="details">
       <div class="det-first">
-        <h4>Total</h4>
+        <h4>Net_Total</h4>
       </div>
       <div class="det-first">
-        <h4>Price3.</h4>
+        <h4>{{ 1.05*$sum }} </h4>
       </div>
     </div>
     {{-- <div class="details">
@@ -118,5 +83,6 @@
       <button type="submit" class="btn btn-danger lower">Buy Now</button>
     </form>
   </div>
+  @endif
 
 @endsection
