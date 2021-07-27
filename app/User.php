@@ -26,4 +26,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public static function userWithUserinfo($id)
+    {
+        $data = User::join('userinfo','userinfo.id', '=', 'users.id')->where('users.id', $id)->get();
+        return $data;
+    }
 }

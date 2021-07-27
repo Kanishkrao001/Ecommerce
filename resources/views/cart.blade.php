@@ -9,45 +9,38 @@
 
   <div class="upper">
 
-    <div class="head">
-      <center><h4>Your Cart Details</h4></center>
+     <div class="head">
+      <p> Your Cart Details </p>
     </div>
     @if(count($data)<=0)
-    <div class="con">
+    {{-- <div class="con"> --}}
       <p>Empty Cart........</p>
       <p>Order Something...</p>
     @else
+    <br>
+    <div class="block">
        @foreach ($data as $item)
-       <div class="con">
-        <div class="before">
-          <img class="imagg" src="{{ $item->image }}" alt="img">
-        </div>
-        <div class="first">
-          <p>{{ $item->Product_Name }}</p>
-        </div>
-        <div class="second">
-          <p>{{ $item->price }}</p>
-        </div>
-  
-        <div class="third">
-          <form class="lower" action="/{{ $item->id }}/cart/remove" method="post">
-            {{ csrf_field() }}
-            <input type="hidden" name="product_id" value="{{ $item->product_id }}">
-            <input type="hidden" name="customer_id" value="{{ $item->customer_id }}">
-            <button class="btn btn-danger lower">Remove</button>
-          </form>
-        </div>
-        @php ($sum = $sum + $item->price)
+        
+          <div class="details1">
+            <div class="det-first">
+              <img class="imagg-1" src="{{ $item->image }}" alt="img">
+            </div>
+            <div class="det-first1">
+              <p>{{ $item->Product_Name }}</p>
+            </div>
+            <div class="det-first1">
+              <p>{{ $item->price }}</p>
+            </div>
+          </div>
+          @php ($sum = $sum + $item->price);
+      
+       @endforeach
       </div>
-      <br>
-      @endforeach
-
-     {{-- <a  href="/{{ Auth::user()->id }}/buy" class="anch">Buy Now</a> --}}
   </div>
 
   <div class="checkout">
     <div class="details h">
-       <h3>Order Summary..!!!</h3>
+       <h3>Order Total..!!!</h3>
     </div>
 
     <div class="details">

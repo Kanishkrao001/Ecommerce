@@ -129,21 +129,19 @@
         }
         .upper {
             float: left;
-            margin-right: 150px;
+            width: 35%;
+            background-color: azure;
             margin-top: 2%;
-            font-size: 18px;  
+            font-size: 20px;  
             font-style: oblique;
             font-family: math;
-            padding: 20px
+            padding: 20px;
         }
         .head {
-            margin-right: 3px;
+            /* margin-right: 3px; */
             font-weight: bolder;
-            background-color: azure;
-            border: 1px solid black;
-            border-radius: 38px;
-            width: 136%;
-            margin: 2px;
+            text-align: center;
+            font-size: xx-large;
         }
         .con {
             display: flex;
@@ -222,6 +220,16 @@
        .search {
            margin-top: 9px;
        }
+       .details1 {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-bottom: 0.1px dotted ;
+            margin: 15px;
+        }
+        .imagg-1 {
+            height: 60px;
+        }
     </style>
 </head>
 <body>

@@ -14,15 +14,15 @@ use App\Order_History;
 
 class ProductController extends Controller
 {
- 
-    public function viewall()
-    {
-        $pro = Product::paginate(3);
-        return view('allproducts', compact('pro'));
-    }
     public function index()
     {
         return view('home');
+    }
+ 
+    public function viewall()
+    {
+        $pro = Product::viewall();
+        return view('allproducts', compact('pro'));
     }
 
     public function bulk()
@@ -31,85 +31,42 @@ class ProductController extends Controller
         {
             for($j=1;$j<22;$j++)
             {
-                $data = Product::find($j);
-                // print_r($data['category_id']);
-                $add = new Product;
-                $add->category_id=$data['category_id'];
-                $add->Product_Name=$data['Product_Name'];
-                $add->Product_Description = $data['Product_Description'];
-                $add->image=$data['image'];
-                $add->price=$data['price'];
-                $add->Pieces_available=$data['Pieces_available'];
-
-                $add->save();
+                Product::addProducts($j);
             }
         }
     }
 
     public function search(Request $req)
     {
-        // return $req->input();
-        // return $data = Product::select("SELECT * FROM 'products'
-        // WHERE 'Product_Name' LIKE '%op%'")->get();
-
-        $res = Product::where('Product_Name', 'like', '%'.$req->input('query').'%')->paginate(10);
-        // return $data;
-        $res->appends(['query' => $req->input('query')]);
+        $res = Product::SearchProducts($req);
         return view('search', compact('res'));
     }
 
 
     public function AddToCart(Request $request)
     {
-            if(!Auth::guest()){
-           
-            $cart = new Cart;
-            // $cart->customer_id = $request->session()->get('user')['customer_id'];
-            $cart->customer_id = Auth::id();
-            $cart->product_id = $request->product_id;
-            $cart->save();
-            $data = DB::table('products')->join('categories', 'products.category_id', '=', 'categories.category_id')
-            ->where(["product_id"=>"$request->product_id"])
-            ->first();
-            $cart->save();
+        $data = Cart::AddToCart($request);
 
-            return redirect("/$data->category");
-        }
-        else{
-            return redirect('/login');
-        }
+        return redirect("/$data->category");
     }
 
     public function details($product_id)
     {
-        $data = Product::find($product_id);
+        $data = Product::detailsofProduct($product_id);
         return view('details', compact('data'));
     }
 
     public function cart($customer_id)
     {
-        if(!Auth::guest()){
-            $data = Cart::join('products','products.product_id', '=', 'cart.product_id')->where('customer_id', $customer_id)->get();
-            return view('cart', compact('data'));
-        }
-        else{
-            return redirect('/login');
-        }
+        $data = Cart::ViewCart($customer_id);
+        return view('cart', compact('data'));
     }
 
     public function remove(Request $req, $id)
     {
-        if(!Auth::guest()){
-
-            Cart::destroy($id);
-
-            $data = Cart::join('products','products.product_id', '=', 'cart.product_id')->where('customer_id', $req->customer_id)->get();
-           
-            return view('cart', compact('data'));
-        }
-        else{
-            return redirect('/login');
-        }
+        $data = Cart::RemoveFromCart($req, $id);
+       
+        return view('cart', compact('data'));
     }
 
     public function view($id)
@@ -119,18 +76,10 @@ class ProductController extends Controller
 
     public function buy(Request $req, $id)
     {
-        // $pro= $req->input("data");
-
-        if(!Auth::guest()){
-
-            $data = User::join('userinfo','userinfo.id', '=', 'users.id')->where('users.id', $id)->get();
-            $pro = Cart::join('products','products.product_id', '=', 'cart.product_id')->where('customer_id', $id)->get();
-            // print_r($pro);
-            return view('checkout', compact('data','pro'));
-        }
-        else{
-            redirect('/login');
-        }
+        $data = User::userWithUserinfo($id);
+        $pro = Cart::CartWithProducts($id);
+       
+        return view('checkout', compact('data','pro'));
     }
 
     public function payment($id)
@@ -145,19 +94,9 @@ class ProductController extends Controller
 
     public function checkout(Request $req)
     {
-        $data = Cart::join('products','products.product_id', '=', 'cart.product_id')
-        ->where('customer_id', Auth::user()->id)->sum('price');
-    
-        // // return $data[1]->Product_Name;
+        $total = Cart::GetTotalOfCart();
         
-        $order= new Order;
-        $order->customer_id = Auth::user()->id;
-        $order->mode_of_payment = $req->payment;
-        $order->address = $req->address;
-        $order->paid = 0;
-        $order->total = $data;
-        
-        $order->save();
+        $order_id = Order::SaveOrder($req, $total);
 
         $id = Cart::join('products','products.product_id', '=', 'cart.product_id')
         ->where('customer_id', Auth::user()->id)->pluck('products.product_id');
@@ -167,7 +106,7 @@ class ProductController extends Controller
            foreach($id as $i)
            {
             $save = new Order_History;
-            $save->cart_id = $order->id;
+            $save->order_id = $order_id;
             $save->user_id = Auth::user()->id;
             $save->product_id = $i;
             $save->save();
