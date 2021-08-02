@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 use \Auth;
+use App\User;
+use App\Product;
 
 use Closure;
 
@@ -16,10 +18,17 @@ class LoginCheck
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::guest())
+        $user = User::find(Auth::id());
+        $age = $user->age;
+        // ye theek chal raha
+        $category = Product::where('product_id','=', $request->product_id)->pluck('category_id');
+        // return $category[0];
+        if($age < 18 and $category[0] == 3)
         {
-            return redirect('/login');
+            return redirect('/Mobiles');
         }
-        return $next($request);
+        else{
+            return $next($request);
+        }
     }
 }
