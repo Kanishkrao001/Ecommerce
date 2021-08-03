@@ -29,7 +29,7 @@
     $token = $header_encoded . "." . $payload_encoded . "." . $signature;
 
     echo "this is my token :" . $token . "<br>";
-    
+
     class  jwt{
 
         public $header = [
@@ -64,3 +64,6 @@
 
     echo "<br>";
 ?>
+
+this is my token :eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MjAsInN1YiI6IiAxMDAwMDAwMDAwMCIsIm5hbWUiOiJLYW5pc2hrIiwiYWRtaW4iOnRydWV9.6456bb1d38132877b1d217e08b70b31d21acc60afde60232db7f53aef9f1d756
+this is my 2nd token :eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MjAsInN1YiI6IiAxMDAwMDAwMDAwMCIsIm5hbWUiOiJLYW5pc2hrIiwiYWRtaW4iOnRydWV9.4eeb90fc42a42efba32a25c50bd1ec90ca79802aeadc441234cfbb1185d2c2e4
