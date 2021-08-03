@@ -17,14 +17,14 @@ class Order_History extends Model
 }
 
 
-class generateJWT()
-{
+// class generateJWT
+// {
 
-    header = { "algorithm": "abc","type" : "JWT" };
-    payload = { "issuer":"abc.com", "subject":"random token", "expire": 10000000,"info":"random info"};
+//     header = { "algorithm": "abc","type" : "JWT" };
+//     payload = { "issuer":"abc.com", "subject":"random token", "expire": 10000000,"info":"random info"};
 
-    $signature = hash(header) + "." + hash(payload);
-    $signature = hash($signature);
+//     $signature = hash(header) + "." + hash(payload);
+//     $signature = hash($signature);
 
-    $token = hash(header) + "." + hash(payload) + "." $signature;
-}
+//     $token = hash(header) + "." + hash(payload) + "." $signature;
+// }

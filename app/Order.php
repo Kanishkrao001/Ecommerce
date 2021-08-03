@@ -25,4 +25,9 @@ class Order extends Model
 
         return $order->id;
     }
+
+    public function order_history()
+    {
+       return $this->hasMany(Order_History::class);
+    }
 }

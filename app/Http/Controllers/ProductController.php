@@ -7,16 +7,46 @@ use \Auth;
 use DB;
 use App\Cart;
 use App\Product;
+use App\Category;
 use App\User;
 use App\Order;
 use App\Order_History;
+use App\Test;
 
 
 class ProductController extends Controller
 {
+    public function userssecond()
+    {
+        // $profiles = Test::where('email','=', 'kartik@gmail.com')->get();
+        $profiles = Test::join('cart', 'users.id', '=', 'cart.user_id')->get();
+        print_r($profiles);
+    }
+
+    public function anotherway()
+    {
+        $profiles = DB::connection('mysql2')->table('users')->where('email','=', 'kartik@gmail.com')->get();
+        print_r($profiles);
+    }
+
     public function index()
     {
         return view('home');
+    }
+
+    public function profile()
+    {
+        $profile = User::find(Auth::id());
+        return $profile;
+        // $user = User::find(Auth::id());
+        // $age = $user->age;
+        // return $age;
+    }
+
+    public function product($id)
+    {
+        $category = Product::where('product_id','=', $id)->pluck('category_id');
+        return $category[0];
     }
  
     public function viewall()
@@ -34,20 +64,25 @@ class ProductController extends Controller
                 Product::addProducts($j);
             }
         }
+        return redirect('/home');
     }
 
     public function search(Request $req)
     {
         $res = Product::SearchProducts($req);
         return view('search', compact('res'));
+    
+        // $idd = Product::join('categories', 'categories.category_id ' , '=', 'products.category_id ')->get();
     }
 
 
     public function AddToCart(Request $request)
     {
-        $data = Cart::AddToCart($request);
+        // $data = Cart::AddToCart($request);
+        Cart::AddToCart($request);
 
-        return redirect("/$data->category");
+        // return redirect("/$data->category");
+        return response()->json();
     }
 
     public function details($product_id)
@@ -65,8 +100,26 @@ class ProductController extends Controller
     public function remove(Request $req, $id)
     {
         $data = Cart::RemoveFromCart($req, $id);
-       
         return view('cart', compact('data'));
+    }
+
+    public function delete(Request $req)
+    {
+        // return $req->input();
+        // die();
+        $temp = Cart::find($req->id)->delete();
+        // print_r($temp);
+        // return response()->json([
+        //     'success' => 'Record deleted successfully',
+        //     'error' => 'Error aa gaya'
+        // ]);
+        return json_encode([
+                'success' => 'Record deleted successfully',
+                'error' => 'Error aa gaya',
+                'abc' => $temp
+        ]);
+        // $data = Cart::join('products','products.product_id', '=', 'cart.product_id')->where('customer_id', $req->customer_id)->get();
+        // return response()->json();
     }
 
     public function view($id)
@@ -121,8 +174,35 @@ class ProductController extends Controller
 
     public function history()
     {
-       $order = Order::where('customer_id', Auth::id())->get();
-       return $order[0]; 
-    //    $details = Order_History::join('orders', 'order_histories.cart_id', '=', 'orders.id')->pluck('')
+       $orders = Order::where('customer_id', Auth::id())->orderBy('id','desc')->get();
+       return view('orders', compact('orders'));
+    //    return $order_id; 
+    //    $orders = array();
+    //    foreach($orders as $order)
+    // print_r($orders);
+    //   foreach($orders as $id)
+    //   {
+    //       print_r($id);
+    //   }
+    //    {
+    //        $temp = $order->order_history->where('order_id', 13)->get();
+    //     //    $products = Order_History::where('order_id', $id)->pluck('product_id');
+    //     //    if(count($products) > 0)
+    //     //    foreach($products as $pid)
+    //     //    {
+
+    //     //    }
+    //        print_r($temp) ;
+    //     //    $orders[] = $products;
+    //    }
+
+    //    print_r($orders);
+    //   return view('orders', compact('orders'));
+    }
+
+    public function orderHistory($id)
+    {
+        $all = Order_History::GetOrderDetails($id);
+        return view('orderpage', compact('all'));
     }
 }

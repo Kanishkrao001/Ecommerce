@@ -28,7 +28,7 @@ class Cart extends Model
         ->first();
         $cart->save();
 
-        return $data;
+        // return $data;
     }
 
     public static function ViewCart($customer_id)

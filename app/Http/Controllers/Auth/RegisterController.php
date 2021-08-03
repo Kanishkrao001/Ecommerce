@@ -49,6 +49,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
+            'age' => 'required',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'isseller' => 'required',
@@ -65,6 +66,7 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
+            'age' => $data['age'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'IsSeller' => $data['isseller'] == "yes" ? true : false,

@@ -12,6 +12,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script type="text/javascript" 
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+    </script>
 
     <style>
         .navb {
@@ -57,44 +60,69 @@
             cursor:pointer;  
         }
         .imag {
-            height: 200px;
-            width: 200px;
+            height: 170px;
+            width: 160px;
         }
         .imagg {
-            height: 100px;
+            height: 60px;
             width: auto;
         }
         .items {
-            display: flex;
+            /* display: flex;
             text-align: center;
             justify-content: space-evenly;
+            border-bottom: 1px dashed; */
+            float: left;
+            width: 22%;
+            border: 1px solid lightgray;
+            border-radius: 12px;
+  
+            margin: 10px;
+            padding: 14px;
         } 
         .desc {
             display: flex;
             margin: 6px;
+            align-items: center;
         }
         .element {
-            font-family: 'Times New Roman', Times, serif;
-            font-weight: bolder;
-            font-size: 20px;
+            
+            /* font-weight: bolder; */
+            font-size: 17px;
         }
         /* .element-1 {
             display:flex;
             justify-content: space-between;
         } */
+        #p1 {
+            font-weight: bold;
+        }
         .carousel-caption {
             left: 20% !important;
             color: blue;
         }
+        .item {
+            background-color: linen;
+        }
         img.imgg {
             height: 400px !important;
+            width: 37%;
         }
         .row {
             width: 80%;
-            margin: 4px 4px 4px 39px;
+            /* margin: 4px 4px 4px 39px; */
+            margin-top: 30px;
+            margin-left: 8%;
         } 
         .clm2 {
             margin-top: 45px;
+            margin-right: 40%;
+        }
+        .con2 {
+            margin-right: 10%;
+        }
+        .con2_1 {
+            width: max-content;
         }
         .cate {
             display: flex;
@@ -213,9 +241,8 @@
         .order {
             display: flex;
             justify-content: space-around;
-            border: 0.1px solid red;
-            border-radius: 46px;
-            width: 50%
+            width: 50%;
+            margin-bottom: 10px;
         }
        .search {
            margin-top: 9px;
@@ -229,6 +256,33 @@
         }
         .imagg-1 {
             height: 60px;
+        }
+        .overall {
+            display: flex;]
+            align-items: center;
+        }
+        .left {
+            width: 15%;
+
+        }
+        .right {
+            width: 15%;
+        }
+        .all {
+            width: 70%;
+        }
+        .gap {
+            margin-bottom: 15px;
+            border-radius: 16px;
+            width: 55%;
+        }
+        .all-1 {
+            display: flex;
+            justify-content: space-around;
+        }
+        .wrap {
+            width: 65%;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -299,16 +353,16 @@
                                         </form>
                                     </li>
                                     <li>
-                                        <a href="#">My Profile</a>
+                                        <a href="/{{ Auth::id() }}/profile">My Profile</a>
 
-                                        <form id="logout-form" action="#" method="POST" style="display: none;">
+                                        <form action="/{{ Auth::id() }}/profile" method="GET" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
                                     <li>
                                         <a href="/{{ Auth::id() }}/cart_history">My Orders</a>
 
-                                        <form id="logout-form" action="/{{ Auth::id() }}/cart_history" method="GET" style="display: none;">
+                                        <form action="/{{ Auth::id() }}/cart_history" method="GET" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>

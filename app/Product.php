@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use App\Category;
 
 class Product extends Model
 {
@@ -29,13 +30,31 @@ class Product extends Model
 
     public static function viewall()
     {
-        $pro = Product::paginate(3);
+        $pro = Product::paginate(12);
         return $pro;
     }
 
     public static function SearchProducts(Request $req)
     {
-        $res = Product::where('Product_Name', 'like', '%'.$req->input('query').'%')->paginate(10);
+        // $id = Product::join('categories', 'products.category_id ' , '=', 'categories.category_id ')
+        //                 ->pluck('category_id ');
+        // print_r($id);
+    
+        $id = Category::where('category', 'like', '%'.$req->input('query').'%')->pluck('category_id');
+        // echo $idd;
+        if(count($id)){
+            $idd= $id[0];
+            $res = Product::where('Product_Name', 'like', '%'.$req->input('query').'%')
+                            ->orWhere('Product_Description', 'like', '%'.$req->input('query').'%')
+                            ->orWhere('category_id',$idd)
+                            ->paginate(12);
+        }
+        else{
+            $res = Product::where('Product_Name', 'like', '%'.$req->input('query').'%')
+                        ->orWhere('Product_Description', 'like', '%'.$req->input('query').'%')
+                        ->paginate(12);
+        }
+
         $res->appends(['query' => $req->input('query')]);
 
         return $res;

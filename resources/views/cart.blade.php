@@ -21,7 +21,7 @@
     <div class="block">
        @foreach ($data as $item)
         
-          <div class="details1">
+          <div class="details1" id="row{{$item->id}}">
             <div class="det-first">
               <img class="imagg-1" src="{{ $item->image }}" alt="img">
             </div>
@@ -31,9 +31,21 @@
             <div class="det-first1">
               <p>{{ $item->price }}</p>
             </div>
+        
+          <div class="det-first1">
+            {{-- <form class="lower" action="/{{ $item->id}}/cart/remove" method="post">
+              {{ csrf_field() }}
+              <input type="hidden" name="product_id" value="{{ $item->product_id }}">
+              <input type="hidden" name="customer_id" value="{{ $item->customer_id }}">
+              {{-- <button class="btn btn-danger lower">Remove</button> --}}
+              {{-- <button id="btn" data-id="{{ $item->id }}" data-token="{{ csrf_token() }}">sample</button> 
+            </form> <br> --}}
+            {{-- <button id="btn" data-id="{{ $item->id }}" data-token="{{ csrf_token() }}">sample</button> --}}
+            <button id="btn" onclick="itemdelete({{$item->id}}, {{$item->price}})">sample</button>
           </div>
+        </div>
           @php ($sum = $sum + $item->price);
-      
+         
        @endforeach
       </div>
   </div>
@@ -73,9 +85,70 @@
     <form class="lower" action="/{{ Auth::user()->id }}/buy" method="post">
       {{ csrf_field() }}
       <input type="hidden" name="data" value="{{ $data }}">
-      <button type="submit" class="btn btn-danger lower">Buy Now</button>
+      <center><button type="submit" class="btn btn-success lower">Buy Now</button>
     </form>
   </div>
+
   @endif
+
+{{-- <script type="text/javascript">
+    $(document).ready(function(){
+        $("#btn").click(function(){
+          if(confirm("Do you really want to deelete")){
+          var id = $(this).data("id");
+          var token = $(this).data("token");
+          $.ajax(
+            {
+              // url: '{{ url('/cart/remove') }}',
+              url: '/cart/remove',
+              type: "DELETE",
+              data: {
+                "id": id,
+                "_token": token,
+              },
+              success: function(response) {
+                // return data;
+               
+                console.log("chal gaya");
+                // $('.block').html(data);
+             },
+             error: function() {
+               console.log("error");
+             }
+          });
+          }
+        });
+    });
+    </script> --}}
+
+  <script>
+    function itemdelete(id, price)
+    {
+      // var token = $(this).data("token");
+      if(confirm("Delete karna hai??"))
+      {
+        $.ajax({
+          url: '/cart/remove',
+          type: "DELETE",
+          data: {
+            "id": id,
+            "price":price,
+            "_token":"{{ csrf_token() }}",
+          },
+          success: function(data)
+          {
+            $('#row'+id).remove();
+            // console.log("chal gaya");
+            location.reload();
+            // console.log(data);
+          },
+          error: function()
+          {
+            console.log("nahi chala");
+          }
+      })
+      }
+    }
+</script>
 
 @endsection

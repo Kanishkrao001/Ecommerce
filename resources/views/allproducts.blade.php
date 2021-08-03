@@ -2,9 +2,16 @@
    
 @section('content')
     
-    <center>{{ 'ALL ITEMS....' }} 
+    <center><h1>ALL ITEMS...</h1>
         <br><br>
+  <div class="overall">
+        <div class="left">
+          <h2>left side</h2>
+        </div>
+
+        <div class="all">
         @foreach ($pro as $item)
+        
         <div class="items">
          <div class="element">
            <a href="details/{{ $item->product_id }}">
@@ -25,13 +32,18 @@
                {{ csrf_field() }}
                <input type="hidden" name="Product_Name" value="{{ $item->Product_Name }}">
                <input type="hidden" name="product_id" value="{{ $item->product_id }}">
-               <button class="btn btn-success">Add to Cart</button>
+               <button class="btn btn-success gap">Add to Cart</button>
              </form>
            </div>  
          </div>
-         <br><br>
+      
         @endforeach
-
         {{ $pro->links() }}
+      </div>
 
-        @endsection
+      <div class="right">
+          <h3>right side</h3>
+      </div>
+
+  </div>
+@endsection

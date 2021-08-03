@@ -1,11 +1,13 @@
 @extends('layouts.app');
 
 @section('content')
+<br>
 
 {{-- {{ $pro[0]['Product_Name'] }} --}}
 
      <div class="order-summary">
         <h3>Order Summary.....</h3>
+        <br>
         @foreach ($pro as $item)
         <div class="order">
           <div class="before">

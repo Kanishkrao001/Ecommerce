@@ -25,7 +25,8 @@ class LoginCheck
         // return $category[0];
         if($age < 18 and $category[0] == 3)
         {
-            return redirect('/Mobiles');
+            return redirect('/home');
+            // die();
         }
         else{
             return $next($request);
